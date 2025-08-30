@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NetRoute Academy - Cybersecurity Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Roboto', 'sans-serif'],
+              montserrat: ['Montserrat', 'sans-serif'],
+            },
+            colors: {
+              'primary': '#007bff',
+              'secondary': '#6c757d',
+              'accent': '#28a745',
+              'background-light': '#f8f9fa',
+              'background-dark': '#343a40',
+              'text-light': '#333',
+              'text-dark': '#f8f9fa',
+              'youtube-red': '#ff0000',
+              'facebook-blue': '#3b5998',
+            }
+          }
+        }
+      }
+    </script>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0",
+    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+    "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module">
+        import React, { useState, useEffect, useRef } from 'react';
+        import ReactDOM from 'react-dom/client';
+
+        // --- CONSTANTS ---
+        const videos = [
+            { id: 'PkAX8TyP6pI', title: 'SCAM EXPOSED: Fake SSS, GCash, DOLE & Lazada Phishing Tricks', thumbnailUrl: 'https://img.youtube.com/vi/PkAX8TyP6pI/hqdefault.jpg', videoUrl: 'https://youtu.be/PkAX8TyP6pI' },
+            { id: 'nDKPOcnd_EA', title: 'The Art of Deception: Beyond Phishing - 1 Hour Topic', thumbnailUrl: 'https://img.youtube.com/vi/nDKPOcnd_EA/hqdefault.jpg', videoUrl: 'https://youtu.be/nDKPOcnd_EA' },
+            { id: 'bOoj78GXkac', title: 'Facebook Session Hijacking even w/ 2FA | Explained', thumbnailUrl: 'https://img.youtube.com/vi/bOoj78GXkac/hqdefault.jpg', videoUrl: 'https://youtu.be/bOoj78GXkac' },
+            { id: '6smlTxQkW1g', title: 'The Truth About Sextortion Email', thumbnailUrl: 'https://img.youtube.com/vi/6smlTxQkW1g/hqdefault.jpg', videoUrl: 'https://youtu.be/6smlTxQkW1g' },
+            { id: 'PM2pYzcNNfU', title: 'BDO Phishing Email Exposed! | Real Sample + Red Flags', thumbnailUrl: 'https://img.youtube.com/vi/PM2pYzcNNfU/hqdefault.jpg', videoUrl: 'https://youtu.be/PM2pYzcNNfU' },
+            { id: 'Lfr68um7ZY0', title: '⚠️ Facebook Phishing Link EXPLAINED — Don’t Fall for This Scam!', thumbnailUrl: 'https://img.youtube.com/vi/Lfr68um7ZY0/hqdefault.jpg', videoUrl: 'https://youtu.be/Lfr68um7ZY0' },
+            { id: 'sxPZPMOejHQ', title: 'Phishing in Clay Animation', thumbnailUrl: 'https://img.youtube.com/vi/sxPZPMOejHQ/hqdefault.jpg', videoUrl: 'https://youtu.be/sxPZPMOejHQ' },
+        ];
+        const shorts = [
+            { id: 'PcyRnM26-_E', title: 'Why SMS Based 2FA Isn’t Always Safe!', thumbnailUrl: 'https://img.youtube.com/vi/PcyRnM26-_E/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/PcyRnM26-_E?feature=share' },
+            { id: '6E-C3mTUhyY', title: 'What is Two Factor Authentication 2FA', thumbnailUrl: 'https://img.youtube.com/vi/6E-C3mTUhyY/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/6E-C3mTUhyY?feature=share' },
+            { id: 'KVRqKCYn0K8', title: '5 Common Cybersecurity Mistakes You Need to Avoid!', thumbnailUrl: 'https://img.youtube.com/vi/KVRqKCYn0K8/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/KVRqKCYn0K8?feature=share' },
+            { id: 'GJEtmQxq9DY', title: 'Are Your Apps Spying on You? Safeguard Your Data Now!', thumbnailUrl: 'https://img.youtube.com/vi/GJEtmQxq9DY/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/GJEtmQxq9DY?feature=share' },
+            { id: 'Zzum6IjcxI0', title: 'How to Spot Phishing Emails & Messages', thumbnailUrl: 'https://img.youtube.com/vi/Zzum6IjcxI0/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/Zzum6IjcxI0?feature=share' },
+            { id: 'SU7xY-eqUYI', title: 'What is Cybersecurity? Simple Explanation!', thumbnailUrl: 'https://img.youtube.com/vi/SU7xY-eqUYI/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/SU7xY-eqUYI?feature=share' },
+            { id: 'zLHPbY5DXWY', title: 'Why Your Social Media is a Goldmine for Hackers', thumbnailUrl: 'https://img.youtube.com/vi/zLHPbY5DXWY/hqdefault.jpg', videoUrl: 'https://youtube.com/shorts/zLHPbY5DXWY?feature=share' },
+        ];
+        const guides = [
+            { id: '1', title: 'The Ultimate Phishing Survival Guide', description: "Learn how to identify, avoid, and report phishing attempts. Includes real-world examples and a checklist.", readUrl: '#', downloadUrl: '#' },
+            { id: '2', title: 'Scam Playbook: What to Do If You\'ve Been Scammed', description: "A step-by-step guide on reporting scams, recovering losses, and protecting yourself after an incident.", readUrl: '#', downloadUrl: '#' },
+            { id: '3', title: 'Securing Your Social Media Accounts', description: 'Best practices for Facebook, Instagram, Twitter, and other platforms. Two-Factor Authentication, privacy settings, and more.', readUrl: '#', downloadUrl: '#' },
+            { id: '4', title: 'Understanding Malware: Viruses, Ransomware & Spyware', description: 'An introduction to different types of malware, how they work, and how to defend against them.', readUrl: '#', downloadUrl: '#' },
+        ];
+        const TABS = [
+            { id: 'YouTube-Videos', label: 'YouTube Videos' },
+            { id: 'YouTube-Shorts', label: 'YouTube Shorts' },
+            { id: 'Guides-Resources', label: 'Guides & Resources' },
+            { id: 'Community-Contact', label: 'Community & Contact' },
+        ];
+
+        // --- COMPONENTS ---
+
+        const Header = () => (
+            React.createElement("header", { className: "bg-primary text-text-dark text-center py-6 shadow-md" },
+                React.createElement("h1", { className: "text-4xl font-bold font-montserrat" }, "NetRoute Academy"),
+                React.createElement("p", { className: "mt-2 text-lg" }, "Your Go-To Channel for Cybersecurity Insights & Scam Prevention")
+            )
+        );
+
+        const Tabs = ({ tabs, activeTab, setActiveTab }) => (
+            React.createElement("nav", { className: "bg-background-dark shadow-md" },
+                React.createElement("div", { className: "container mx-auto flex justify-center flex-wrap" },
+                    tabs.map((tab) => (
+                        React.createElement("button", {
+                            key: tab.id,
+                            onClick: () => setActiveTab(tab.id),
+                            className: `py-3 px-5 m-1 text-base rounded-md transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50
+                                ${activeTab === tab.id
+                                    ? 'bg-primary text-text-dark font-bold'
+                                    : 'bg-transparent text-text-dark hover:bg-white/20'
+                                }`
+                        }, tab.label)
+                    ))
+                )
+            )
+        );
+
+        const VideoCard = ({ title, thumbnailUrl, videoUrl, buttonText }) => (
+            React.createElement("div", { className: "border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300 flex flex-col bg-gray-50" },
+                React.createElement("img", { src: thumbnailUrl, alt: title, className: "w-full h-48 object-cover" }),
+                React.createElement("div", { className: "p-4 flex flex-col flex-grow" },
+                    React.createElement("h3", { className: "text-lg font-bold text-text-light mb-4 h-14" }, title),
+                    React.createElement("a", {
+                        href: videoUrl,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "mt-auto inline-block bg-accent text-white text-center font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+                    }, buttonText)
+                )
+            )
+        );
+
+        const GuideCard = ({ title, description, readUrl, downloadUrl }) => (
+            React.createElement("div", { className: "bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transform transition-all duration-300" },
+                React.createElement("h3", { className: "text-xl font-bold text-primary font-montserrat mb-2" }, title),
+                React.createElement("p", { className: "text-secondary mb-4" }, description),
+                React.createElement("div", { className: "flex items-center gap-4 mt-auto" },
+                    React.createElement("a", { href: readUrl, target: "_blank", rel: "noopener noreferrer", className: "bg-primary text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition-opacity" }, "Read Guide"),
+                    React.createElement("a", { href: downloadUrl, target: "_blank", rel: "noopener noreferrer", className: "bg-secondary text-white font-bold py-2 px-4 rounded-md hover:bg-gray-600 transition-colors" }, "Download PDF")
+                )
+            )
+        );
+
+        const YouTubeIcon = () => (
+            React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "currentColor" },
+                React.createElement("path", { d: "M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" })
+            )
+        );
+
+        const FacebookIcon = () => (
+            React.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "currentColor" },
+                React.createElement("path", { d: "M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v2.385z" })
+            )
+        );
+
+        const CommunityContact = () => (
+            React.createElement("div", { className: "text-center" },
+                React.createElement("h2", { className: "text-3xl font-bold font-montserrat text-primary border-b-2 border-primary pb-2 mb-6" }, "Connect with NetRoute Academy"),
+                React.createElement("p", { className: "text-lg text-gray-600 mb-8" }, "Join our community to stay updated and discuss cybersecurity topics!"),
+                React.createElement("div", { className: "flex flex-wrap justify-center gap-6 mb-12" },
+                    React.createElement("a", { href: "https://www.youtube.com/@NetRouteAcademy", target: "_blank", rel: "noopener noreferrer", className: "flex items-center gap-3 bg-youtube-red text-white font-bold py-3 px-6 rounded-md shadow-md hover:brightness-110 transition-all transform hover:scale-105" },
+                        React.createElement(YouTubeIcon, null), "YouTube Channel"),
+                    React.createElement("a", { href: "https://www.facebook.com/NetRouteAcademy/", target: "_blank", rel: "noopener noreferrer", className: "flex items-center gap-3 bg-facebook-blue text-white font-bold py-3 px-6 rounded-md shadow-md hover:brightness-110 transition-all transform hover:scale-105" },
+                        React.createElement(FacebookIcon, null), "Facebook Page")
+                ),
+                React.createElement("div", { className: "mt-12 border-t pt-8" },
+                    React.createElement("h2", { className: "text-3xl font-bold font-montserrat text-primary pb-2 mb-4" }, "Get in Touch"),
+                    React.createElement("p", { className: "text-lg text-gray-700" }, "For inquiries, collaborations, or support, feel free to reach out:"),
+                    React.createElement("p", { className: "text-lg text-gray-700 my-4" }, "Email: ",
+                        React.createElement("a", { href: "mailto:netroute@patronhub3.onmicrosoft.com", className: "text-primary hover:underline" }, "netroute@patronhub3.onmicrosoft.com")),
+                    React.createElement("p", { className: "text-lg text-gray-700" }, "We're here to help you navigate the complexities of online security!")
+                )
+            )
+        );
+
+        const Footer = () => (
+            React.createElement("footer", { className: "bg-background-dark text-text-dark text-center py-6 mt-10 shadow-inner" },
+                React.createElement("p", null, `© ${new Date().getFullYear()} NetRoute Academy. All rights reserved.`),
+                React.createElement("p", { className: "mt-1" }, "Stay safe, stay informed!")
+            )
+        );
+
+        const FadeIn = ({ children }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const domRef = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                            if (domRef.current) {
+                                observer.unobserve(domRef.current);
+                            }
+                        }
+                    });
+                });
+                const currentRef = domRef.current;
+                if (currentRef) observer.observe(currentRef);
+                return () => {
+                    if (currentRef) observer.unobserve(currentRef);
+                };
+            }, []);
+            return React.createElement("div", {
+                ref: domRef,
+                className: `transition-opacity duration-1000 ease-out ${isVisible ? 'opacity-100' : 'opacity-0 translate-y-5'}`
+            }, children);
+        };
+
+        // --- MAIN APP COMPONENT ---
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('YouTube-Videos');
+            const renderContent = () => {
+                switch (activeTab) {
+                    case 'YouTube-Videos':
+                        return React.createElement(FadeIn, null,
+                            React.createElement("h2", { className: "text-3xl font-bold font-montserrat text-primary border-b-2 border-primary pb-2 mb-6" }, "Latest YouTube Videos"),
+                            React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
+                                videos.map(video => React.createElement(VideoCard, { key: video.id, ...video, buttonText: "Watch Video" }))
+                            )
+                        );
+                    case 'YouTube-Shorts':
+                        return React.createElement(FadeIn, null,
+                            React.createElement("h2", { className: "text-3xl font-bold font-montserrat text-primary border-b-2 border-primary pb-2 mb-6" }, "YouTube Shorts"),
+                            React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
+                                shorts.map(short => React.createElement(VideoCard, { key: short.id, ...short, buttonText: "Watch Short" }))
+                            )
+                        );
+                    case 'Guides-Resources':
+                        return React.createElement(FadeIn, null,
+                            React.createElement("h2", { className: "text-3xl font-bold font-montserrat text-primary border-b-2 border-primary pb-2 mb-6" }, "Guides & Resources"),
+                            React.createElement("p", { className: "mb-8 text-gray-600" }, "Here you'll find helpful guides, playbooks, and resources to boost your cybersecurity knowledge and help you respond to scams."),
+                            React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6" },
+                                guides.map(guide => React.createElement(GuideCard, { key: guide.id, ...guide }))
+                            ),
+                            React.createElement("div", { className: "text-center mt-12" },
+                                React.createElement("a", { href: "#", className: "bg-primary text-text-dark font-bold py-3 px-6 rounded-md hover:opacity-90 transition-opacity" }, "View All Resources")
+                            )
+                        );
+                    case 'Community-Contact':
+                        return React.createElement(FadeIn, null, React.createElement(CommunityContact, null));
+                    default:
+                        return null;
+                }
+            };
+            return React.createElement("div", { className: "bg-background-light text-text-light font-sans min-h-screen flex flex-col" },
+                React.createElement(Header, null),
+                React.createElement(Tabs, { tabs: TABS, activeTab: activeTab, setActiveTab: setActiveTab }),
+                React.createElement("main", { className: "container mx-auto px-5 py-8 flex-grow" },
+                    React.createElement("div", { className: "bg-white p-8 rounded-lg shadow-md" }, renderContent())
+                ),
+                React.createElement(Footer, null)
+            );
+        };
+
+        // --- RENDER ---
+        const rootElement = document.getElementById('root');
+        if (!rootElement) {
+            throw new Error("Could not find root element to mount to");
+        }
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(React.createElement(React.StrictMode, null, React.createElement(App, null)));
+    </script>
+</body>
+</html>
